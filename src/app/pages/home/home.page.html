@@ -1,8 +1,8 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-button fill="clear" (click)="settings()">
-        <ion-icon name="settings"></ion-icon>
+        <ion-icon color="light" name="settings"></ion-icon>
       </ion-button>
     </ion-buttons>
     <!-- <ion-buttons slot="end">
@@ -38,10 +38,9 @@
 <ion-footer>
   <ion-toolbar>
     <ion-button color="primary" (click)="calculator()" expand="block" fill="solid" shape="round">
-      {{ 'START' | uppercase | translate }}!
+      <ion-text color="light">
+        {{ 'START' | uppercase | translate }}!
+      </ion-text>
     </ion-button>
-    <!-- <ion-button color="primary" (click)="details()" expand="block" fill="solid" shape="round">
-      {{ 'Details' | uppercase | translate }}!
-    </ion-button> -->
   </ion-toolbar>
 </ion-footer>

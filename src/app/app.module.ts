@@ -35,7 +35,7 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserModule,
     BrowserAnimationsModule,
     IonicModule.forRoot({
-      // mode: 'md'
+      mode: 'md'
     }),
     AppRoutingModule,
     HttpClientModule,

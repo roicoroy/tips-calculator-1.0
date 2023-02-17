@@ -22,6 +22,6 @@ export class HomePage implements OnInit, AfterViewInit {
     await this.navigation.navigateForward('calculator');
   }
   async details($event: Event) {
-    await this.navigation.navigateForward('home/details');
+    await this.navigation.navigateFadeOut('home/details');
   }
 }

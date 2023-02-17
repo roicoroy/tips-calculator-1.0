@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { KeyboardService } from './services/keypad/keyboard.service';
 import { LanguageService } from './services/language/language.service';
 import { ThemeService } from './services/theme.service';
@@ -14,6 +15,7 @@ export class AppComponent {
     public readonly language: LanguageService,
     private readonly theme: ThemeService,
     private readonly keyboardService: KeyboardService,
+    private readonly platform: Platform,
   ) {
     this.initializeApp();
   }
@@ -21,8 +23,11 @@ export class AppComponent {
     try {
       this.language.initTranslate();
       this.theme.themeInit();
-      this.keyboardService.setAccessoryBarVisible(true).catch(() => { });
-      this.keyboardService.initKeyboardListeners();
+
+      if (this.platform.is('android') || this.platform.is('ios')) {
+        this.keyboardService.setAccessoryBarVisible(true).catch(() => { });
+        this.keyboardService.initKeyboardListeners();
+      }
     } catch (err) {
       console.log('This is normal in a browser', err);
     }

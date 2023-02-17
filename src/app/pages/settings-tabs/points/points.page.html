@@ -1,5 +1,5 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header>
+  <ion-toolbar color="secondary">
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)="addPoint()">
         <ion-icon name="add"></ion-icon>
@@ -12,9 +12,9 @@
   <ion-header>
     <ion-toolbar>
       <ion-card-header>
-        <ion-card-subtitle> {{ 'ADD_EDIT_MERIT' | translate }} </ion-card-subtitle>
+        <ion-card-subtitle> {{ 'ADD_EDIT_MERIT' | translate | uppercase }} </ion-card-subtitle>
         <ion-card-title>
-          {{ 'POINTS' | translate }}
+          {{ 'POINTS' | translate | uppercase }}
         </ion-card-title>
       </ion-card-header>
     </ion-toolbar>

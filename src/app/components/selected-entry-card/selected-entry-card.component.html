@@ -5,7 +5,7 @@
         <ion-card-subtitle>{{ selectedEntry.date | date }}</ion-card-subtitle>
         <ion-card-title>
           Tips made:
-          {{ selectedEntry.tipsMade | currency }}
+          {{ selectedEntry.tipsMade | currency:'GBP' }}
         </ion-card-title>
       </ion-card-header>
 
@@ -23,7 +23,7 @@
 
             <ion-item>
               <ion-label>Tips Share:</ion-label>
-              <ion-note slot="end">{{ waiter.tipsShare | currency }}</ion-note>
+              <ion-note slot="end">{{ waiter.tipsShare | currency:'GBP' }}</ion-note>
             </ion-item>
 
             <ion-item>

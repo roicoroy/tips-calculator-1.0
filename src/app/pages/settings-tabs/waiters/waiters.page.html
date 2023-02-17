@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
       <ion-button (click)="homePage()">
         <ion-icon name="arrow-back"></ion-icon>
@@ -17,6 +17,18 @@
 </ion-header>
 
 <ion-content *ngIf="viewState$ | async as vs">
+  <ion-header>
+    <ion-toolbar>
+      <ion-card-header>
+        <ion-card-subtitle> {{ 'Add and edit users/waiters' | uppercase }} </ion-card-subtitle>
+        <ion-card-title>
+          <ion-text>
+            {{ 'Users' | uppercase }}
+          </ion-text>
+        </ion-card-title>
+      </ion-card-header>
+    </ion-toolbar>
+  </ion-header>
 
   <ion-card *ngFor="let w of vs.waitersList; let i = index">
 

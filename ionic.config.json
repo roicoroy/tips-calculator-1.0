@@ -1,7 +1,8 @@
 {
   "name": "Merit Calculator",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }

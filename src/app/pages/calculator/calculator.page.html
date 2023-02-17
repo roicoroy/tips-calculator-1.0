@@ -1,13 +1,10 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
       <ion-button (click)="home()">
-        <ion-icon name="arrow-back"></ion-icon>
+        <ion-icon color="light" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>
-      {{ 'TIPS_SHARE_CALCULATOR' | translate }}
-    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -20,8 +17,9 @@
           <ion-label position="floating">
             {{ 'Tips Amount' | translate }}
           </ion-label>
-          <ion-input type="number" inputmode="number" enterkeyhint="Tips" placeholder="Tips Amount"
-            formControlName="tipsAmount"></ion-input>
+          <ion-input clearInput='true' clearOnEdit='true' type="number" inputmode="number" enterkeyhint="Tips"
+            placeholder="Tips Amount" formControlName="tipsAmount">
+          </ion-input>
           <div style="width: 100%" *ngFor="let validation of validationMessages?.tipsAmount">
             <ion-note color="danger"
               *ngIf="entryForm?.get('tipsAmount')?.hasError(validation.type) && (entryForm?.get('tipsAmount')?.dirty || entryForm?.get('tipsAmount')?.touched)">
@@ -61,7 +59,7 @@
             <ion-label>{{ w.name }}</ion-label>
             <ion-buttons slot="end">
 
-              <ion-button (click)="showPicker(w, i)"  shape="round">
+              <ion-button (click)="showPicker(w, i)" shape="round">
 
                 <ion-icon color="tertiary" *ngIf="!w.hours" name="timer-sharp"></ion-icon>
                 <ion-badge color="tertiary" *ngIf="w.hours">
@@ -101,8 +99,11 @@
 
 <ion-footer *ngIf="viewState$ | async as vs" eqmHideWhenKeypadVisible @scaleHeight>
   <ion-toolbar>
-    <ion-button (click)="calculate(vs.waitersList)" expand="block" fill="solid" shape="round">
-      Submit
+    <ion-button [disabled]="!entryForm?.get('tipsAmount')?.value" color="tertiary" (click)="calculate(vs.waitersList)"
+      expand="block" fill="solid" shape="round">
+      <ion-text color="light">
+        {{ 'Submit' | translate }}
+      </ion-text>
     </ion-button>
   </ion-toolbar>
 </ion-footer>

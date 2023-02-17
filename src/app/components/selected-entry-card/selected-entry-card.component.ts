@@ -14,4 +14,8 @@ export class SelectedEntryCardComponent {
   constructor(
     readonly sanitizer: DomSanitizer,
   ) { }
+
+  ionViewDidEnter() {
+    console.log(this.selectedEntry);
+  }
 }
