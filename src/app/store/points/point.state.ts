@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { Storage } from '@ionic/storage-angular';
-import { Point } from '@angular/cdk/drag-drop';
-import { PointsService, POINTS_LIST_KEY } from 'src/app/services';
+import { Point } from 'src/app/models';
 import { PointActions } from './point.action';
 
 export class PointsStateModel {
@@ -11,7 +9,7 @@ export class PointsStateModel {
 }
 
 @State<PointsStateModel>({
-    name: 'points',
+    name: 'point',
     defaults: {
         points: [],
         selectedPoint: null
@@ -19,77 +17,69 @@ export class PointsStateModel {
 })
 @Injectable()
 export class PointsState {
-    constructor(
-        private storage: Storage,
-        private pointsService: PointsService,
-    ) {
-    }
+    private pointsList: Point[] = [
+        new Point({
+            id: 'id-123',
+            label: 'Serve Wine',
+            type: 'radio',
+            value: 0.5,
+        }),
+    ];
+
     @Selector()
-    static getPointsList(state: PointsStateModel) {
+    static getPointsList(state: PointsStateModel): any {
         return state.points;
     }
+
     @Selector()
     static getSelectedPoint(state: PointsStateModel) {
         return state.selectedPoint;
     }
-    @Action(PointActions.Get)
-    getPoints({ getState, setState }: StateContext<PointsStateModel>) {
-        return this.pointsService.getItems()
-            .then((result: any[]) => {
-                if (result) {
-                    const state = getState();
-                    setState({
-                        ...state,
-                        points: result,
-                    });
-                    return this.storage.set(POINTS_LIST_KEY, result);
-                }
-            });
-    }
-    @Action(PointActions.Add)
-    addPoint({ getState, patchState }: StateContext<PointsStateModel>, { payload }: PointActions.Add) {
-        const updateState = payload;
-        return this.pointsService.addItem(payload).then(() => {
-            const state = getState();
-            patchState({
-                points: [...state.points, updateState]
-            });
+    @Action(PointActions.GetPoints)
+    getPoints(ctx: StateContext<PointsStateModel>) {
+        return ctx.patchState({
+            points: this.pointsList,
         });
     }
 
-    @Action(PointActions.Update)
-    updatePoint(ctx: StateContext<PointsStateModel>, { payload, id }: PointActions.Update) {
-        console.log(payload, id);
-        return this.pointsService.updateItem(payload).then((result) => {
-            // console.log(result);
-            const state = ctx.getState();
-            const pointList: any = [...state.points];
-            const todoIndex = pointList.findIndex((item: any) => item.id === id);
-            pointList[todoIndex] = payload;
-            ctx.setState({
-                ...state,
-                points: pointList,
-            });
+    @Action(PointActions.AddPoint)
+    addPoint(ctx: StateContext<PointsStateModel>, { payload }: PointActions.AddPoint) {
+        const state = ctx.getState();
+        return ctx.patchState({
+            points: [
+                ...state.points,
+                payload
+            ]
+        });
+    }
+
+    @Action(PointActions.UpdatePoint)
+    updatePoint(ctx: StateContext<PointsStateModel>, { payload, id }: PointActions.UpdatePoint) {
+        const state = ctx.getState();
+        const points = [...state.points];
+        const index = points.findIndex((item) => item.id === id);
+        points[index] = payload;
+        return ctx.setState({
+            ...state,
+            points,
         });
     }
 
 
-    @Action(PointActions.Delete)
-    deletePoint({ getState, setState }: StateContext<PointsStateModel>, { id }: PointActions.Delete) {
-        return this.pointsService.deleteItem(id).then(() => {
-            const state = getState();
-            const filteredArray = state.points.filter((item) => item.id !== id);
-            setState({
-                ...state,
-                points: filteredArray,
-            });
+    @Action(PointActions.DeletePoint)
+    deletePoint(ctx: StateContext<PointsStateModel>, { point }: PointActions.DeletePoint) {
+        const state = ctx.getState();
+        return state.points.forEach((value: any, index: any) => {
+            if (value == point) {
+                state.points.splice(index, 1);
+            }
         });
     }
 
-    @Action(PointActions.SetSelected)
-    setSelectedPointId({ getState, setState }: StateContext<any>, { payload }: PointActions.SetSelected) {
-        const state = getState();
-        setState({
+    @Action(PointActions.SetSelectedPoint)
+    setSelectedPointId(ctx: StateContext<any>, { payload }: PointActions.SetSelectedPoint) {
+        const state = ctx.getState();
+        ctx.setState({
             ...state,
             selectedPoint: payload
         });

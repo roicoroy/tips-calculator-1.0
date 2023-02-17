@@ -6,3 +6,4 @@ export * from './point.interface';
 export * from './point.type';
 export * from './entry.interface';
 export * from './entry.type';
+export * from './states.interface';

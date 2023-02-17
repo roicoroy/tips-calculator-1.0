@@ -1,8 +1,8 @@
 import { Waiter } from '.';
 
 export interface IEntry {
-    id: number;
-    date: number;
-    tipsMade: number;
-    waiters: Waiter[];
+    id: string | any;
+    date: number | any;
+    tipsMade: number | any;
+    waiters: Waiter[] | any;
 }

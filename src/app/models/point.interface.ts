@@ -1,6 +1,6 @@
 export interface IPoint {
-    id?: number;
-    label: string;
-    type?: string;
-    value: number;
+    id?: string | any;
+    label?: string | any;
+    type?: string | any;
+    value?: number | any;
 }

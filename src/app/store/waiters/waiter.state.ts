@@ -1,91 +1,95 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { Storage } from '@ionic/storage-angular';
 import { Waiter } from 'src/app/models';
-import { IonStorageService } from 'src/app/services';
-import { WaitersService } from 'src/app/services/waiters.service';
 import { WaiterActions } from './waiter.action';
 
-export const WAITERS_LIST_KEY = 'waitersList';
 export class WaiterStateModel {
-    waiters: Waiter[] = [];
+    waiters: Waiter[];
 }
 @State<WaiterStateModel>({
-    name: 'waiters',
+    name: 'waiter',
     defaults: {
         waiters: [],
     }
 })
 @Injectable()
 export class WaitersState {
-    static myService: any;
-    constructor(
-        private waiterService: WaitersService,
-        // private storage: Storage,
-        // private ionStorageService: IonStorageService,
-    ) {
+    private waitersList: Waiter[] = [];
+    private mockData: Waiter[] = [
+        new Waiter({
+            id: Math.floor(Math.random() * 100),
+            name: 'Jose',
+            tipsShare: null,
+            hours: null,
+            totalPoints: null,
+            avatar: 'assets/shapes.svg',
+        }),
+        new Waiter({
+            id: Math.floor(Math.random() * 100),
+            name: 'Mary',
+            tipsShare: null,
+            hours: null,
+            totalPoints: null,
+            avatar: 'assets/shapes.svg',
+        }),
+        new Waiter({
+            id: Math.floor(Math.random() * 100),
+            name: 'Joe',
+            tipsShare: null,
+            hours: null,
+            totalPoints: null,
+            avatar: 'assets/shapes.svg',
+        }),
+    ];
+
+    constructor() {
     }
     @Selector()
-    static getWaiterList(state: WaiterStateModel) {
+    static getWaiterList(state: WaiterStateModel): Waiter[] {
         return state.waiters;
     }
-    @Action(WaiterActions.GetWaitersList)
-    getWaitersList({ getState, setState }: StateContext<WaiterStateModel>) {
-        return this.waiterService.geWaitersList()
-            .then((result: Waiter[]) => {
-                // console.log(result);
-                if (result) {
-                    const state = getState();
-                    setState({
-                        ...state,
-                        waiters: result,
-                    });
-                    // return this.storage.set(TEAM_ENTRY, result);
-                }
-            });
+    @Action(WaiterActions.SetWaitersList)
+    async setWaitersList(ctx: StateContext<WaiterStateModel>) {
+        return ctx.patchState({
+            waiters: this.waitersList,
+        });
+
     }
-    @Action(WaiterActions.Add)
-    addWaiter({ getState, patchState }: StateContext<WaiterStateModel>, { payload }: WaiterActions.Add) {
-        const updateState = payload;
-        return this.waiterService.addItem(payload).then(() => {
-            const state = getState();
-            patchState({
-                waiters: [...state.waiters, updateState]
-            });
+    @Action(WaiterActions.GetWaitersList)
+    async getWaitersList(ctx: StateContext<WaiterStateModel>) {
+        const state = ctx.getState();
+        return ctx.setState({
+            ...state,
+            waiters: [...state.waiters],
+        });
+    }
+    @Action(WaiterActions.AddWaiter)
+    addWaiter(ctx: StateContext<WaiterStateModel>, { payload }: WaiterActions.AddWaiter) {
+        const state = ctx.getState();
+        return ctx.patchState({
+            waiters: [
+                ...state.waiters,
+                payload
+            ]
         });
     }
     @Action(WaiterActions.Update)
     updateWaiter(ctx: StateContext<WaiterStateModel>, { payload, id }: WaiterActions.Update) {
-        return this.waiterService.updateItem(payload).then(() => {
-            const state = ctx.getState();
-            const waiters = [...state.waiters];
-            const todoIndex = waiters.findIndex((item) => item.id === id);
-            waiters[todoIndex] = payload;
-            ctx.setState({
-                ...state,
-                waiters,
-            });
+        const state = ctx.getState();
+        const waiters = [...state.waiters];
+        const index = waiters.findIndex((item) => item.id === id);
+        waiters[index] = payload;
+        return ctx.patchState({
+            waiters: [...waiters],
         });
     }
-    @Action(WaiterActions.UpdateWaiterState)
-    updateWaiterPoints(ctx: StateContext<WaiterStateModel>, { payload }: WaiterActions.Update) {
-        const state = ctx.getState();
-        let waiters: any = state.waiters;
-        waiters = payload;
-        return ctx.setState({
-            ...state,
-            waiters,
-        });;
-    }
     @Action(WaiterActions.Delete)
-    deleteWaiter({ getState, setState }: StateContext<WaiterStateModel>, { id }: WaiterActions.Delete) {
-        return this.waiterService.deleteItem(id).then(() => {
-            const state = getState();
-            const filteredArray = state.waiters.filter((item) => item.id !== id);
-            setState({
-                ...state,
-                waiters: filteredArray,
-            });
+    deleteWaiter(ctx: StateContext<WaiterStateModel>, { waiter, index }: WaiterActions.Delete): any {
+        const state = ctx.getState();
+        return state.waiters.forEach((value: any, index: any) => {
+            if (value == waiter) {
+                state.waiters.splice(index, 1);
+            }
         });
     }
 }

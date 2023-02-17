@@ -1,14 +1,13 @@
-/* eslint-disable prefer-arrow/prefer-arrow-functions */
 import { createAnimation, Animation } from '@ionic/core';
 import { AnimatedProperty, AnimatedValue, PageAnimationDuration, PAGE_INVISIBLE_CLASS, UPPER_PAGE_INDEX } from './animation.const';
 import { TransitionOptions } from './animation.model';
 
-export const slideAnimation = (baseEl: HTMLElement, opts?: TransitionOptions): Animation =>
+export const slideAnimation = (baseEl: HTMLElement, opts?: TransitionOptions | any): Animation =>
     opts.direction === 'forward'
         ? slideUpAnimation(baseEl, opts)
         : slideDownAnimation(baseEl, opts);
 
-export function slideUpAnimation(baseEl: HTMLElement, opts?: TransitionOptions): Animation {
+export function slideUpAnimation(baseEl: HTMLElement, opts?: TransitionOptions | any): Animation {
     return createAnimation()
         .addElement(opts.enteringEl)
         .duration(PageAnimationDuration.SLIDING)
@@ -20,7 +19,7 @@ export function slideUpAnimation(baseEl: HTMLElement, opts?: TransitionOptions):
         .fromTo(AnimatedProperty.TRANSFORM, AnimatedValue.TRANSLATE_Y_PCT(100), AnimatedValue.TRANSLATE_Y_PCT(0));
 }
 
-export function slideDownAnimation(baseEl: HTMLElement, opts?: TransitionOptions): Animation {
+export function slideDownAnimation(baseEl: HTMLElement, opts?: TransitionOptions | any): Animation {
     opts.enteringEl.classList.remove(PAGE_INVISIBLE_CLASS);
 
     const leaveAnimation = createAnimation()
@@ -41,7 +40,7 @@ export function slideDownAnimation(baseEl: HTMLElement, opts?: TransitionOptions
  * @param opts transition options of type `TransitionOptions`. Contain references to the leaving and entering elements
  * @returns animation setup instance
  */
-export function flipAnimation(baseEl: HTMLElement, opts?: TransitionOptions): Animation {
+export function flipAnimation(baseEl: HTMLElement, opts?: TransitionOptions | any): Animation {
     const baseAnimation = createAnimation()
         .addElement(baseEl)
         .beforeStyles({
@@ -85,7 +84,7 @@ export function flipAnimation(baseEl: HTMLElement, opts?: TransitionOptions): An
  * @param opts transition options of type `TransitionOptions`. Contain references to the leaving and entering elements
  * @returns animation setup instance
  */
-export function fadeOutAnimation(baseEl: HTMLElement, opts?: TransitionOptions): Animation {
+export function fadeOutAnimation(baseEl: HTMLElement, opts?: TransitionOptions | any): Animation {
     opts.enteringEl.classList.remove(PAGE_INVISIBLE_CLASS);
 
     const leavingAnimation = createAnimation()

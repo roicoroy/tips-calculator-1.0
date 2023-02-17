@@ -1,4 +1,4 @@
 export class LanguageModel {
-  name: string | undefined;
-  code: string | undefined;
+  name: string;
+  code: string;
 }

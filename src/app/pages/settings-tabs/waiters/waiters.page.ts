@@ -1,17 +1,12 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
-import { Select, Store } from '@ngxs/store';
+import { Component, ViewChild } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { Store } from '@ngxs/store';
 import { IonicSelectableComponent } from 'ionic-selectable';
 import { Observable } from 'rxjs';
-import { slideAnimation } from 'src/app/animations/nav-animation';
-import { IWaitersListModel, WaitersListFacade } from 'src/app/components/waiters-list/waiters-list.facade';
-import { Point, Waiter } from 'src/app/models';
+import { Waiter } from 'src/app/models';
 import { NavigationService } from 'src/app/services/navigation.service';
-import { PointActions } from 'src/app/states/points/point.action';
-import { PointsState } from 'src/app/states/points/point.state';
-import { WaiterActions } from 'src/app/states/waiters/waiter.action';
-import { WaitersState } from 'src/app/states/waiters/waiter.state';
+import { WaiterActions } from 'src/app/store/waiters/waiter.action';
+import { WaitersPageFacade } from './waiters.facade';
 import { WaiterModalComponent } from './waiters/waiter-modal/waiter-modal.component';
 
 @Component({
@@ -19,31 +14,19 @@ import { WaiterModalComponent } from './waiters/waiter-modal/waiter-modal.compon
   templateUrl: './waiters.page.html',
   styleUrls: ['./waiters.page.scss'],
 })
-export class WaitersPage implements OnInit {
-  viewState$: Observable<IWaitersListModel>;
-  @Select(WaitersState.getWaiterList) waitersList: Observable<Waiter[]>;
-  @Select(PointsState.getPointsList) pointsListState: Observable<Point[]>;
-  @ViewChild('selectPointsComponent') selectPointsComponent: IonicSelectableComponent;
-  selectPointList = [];
-  showAddButton = null;
+export class WaitersPage {
+
+  viewState$: Observable<any>;
+
+  @ViewChild('selectPointsComponent') selectPointsComponent!: IonicSelectableComponent;
+
   constructor(
     public modalController: ModalController,
     private store: Store,
     private navigation: NavigationService,
-  ) { }
-
-  ngOnInit() {
-    this.store.dispatch(new PointActions.Get());
-    this.store.dispatch(new WaiterActions.Get());
-    this.pointsListState.subscribe((response) => {
-      if (response.length === 0) {
-        this.showAddButton = true;
-      }
-      else {
-        this.showAddButton = false;
-      }
-      this.selectPointList = response;
-    });
+    private facade: WaitersPageFacade,
+  ) {
+    this.viewState$ = this.facade.viewState$;
   }
   async addWaiter() {
     const modal = await this.modalController.create({
@@ -51,16 +34,11 @@ export class WaitersPage implements OnInit {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-
     if (data) {
-      const newWaiter = {
-        name: data.name,
-        avatar: !data.avatar.imageData ? data.avatar : data.avatar.imageData,
-      };
-      this.store.dispatch(new WaiterActions.Add(newWaiter));
+      this.store.dispatch(new WaiterActions.AddWaiter(data));
     }
   }
-  async editWaiter(waiter, i) {
+  async editWaiter(waiter: any, i: any) {
     const modal = await this.modalController.create({
       component: WaiterModalComponent,
       cssClass: 'modal-class',
@@ -71,42 +49,23 @@ export class WaitersPage implements OnInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if (data) {
-      let editedWaiter;
-      this.waitersList.subscribe((wlist: any) => {
-        editedWaiter = {
-          id: wlist[i].id,
-          name: data.name,
-          hours: wlist[i].hours,
-          pointsList: wlist[i].pointsList,
-          avatar: !data.avatar.imageData ? data.avatar : data.avatar.imageData,
-        };
-      });
-      this.store.dispatch(new WaiterActions.Update(editedWaiter, editedWaiter.id));
+      this.store.dispatch(new WaiterActions.Update(data, data.id));
     }
   }
 
-  onSelectTableChange($event, i) {
+  onSelectTableChange($event: any, i: number): void {
+    const waiters = this.store.selectSnapshot<any>((state: any) => state.waiter?.waiters);
     const waiter = new Waiter({});
-    this.waitersList.subscribe((response: any) => {
-      waiter.id = response[i].id;
-      waiter.name = response[i].name;
-      waiter.pointsList = $event.value;
-      waiter.avatar = response[i].avatar;
-    });
-    console.log(waiter);
+    waiter.id = waiters[i].id;
+    waiter.name = waiters[i].name;
+    waiter.pointsList = $event.value;
+    waiter.avatar = waiters[i].avatar;
     this.store.dispatch(new WaiterActions.Update(waiter, waiter.id));
   }
-  deleteWaiter(id: number) {
-    this.store.dispatch(new WaiterActions.Delete(id));
+  deleteWaiter(waiter: any, i: number) {
+    this.store.dispatch(new WaiterActions.Delete(waiter, i));
   }
   async homePage() {
-    await this.navigation.navigateForward('home');
-  }
-  togglePoints() {
-    this.selectPointsComponent.toggleItems(this.selectPointsComponent.itemsToConfirm.length ? false : true);
-  }
-  confirm() {
-    this.selectPointsComponent.confirm();
-    this.selectPointsComponent.close();
+    await this.navigation.navigateFlip('home');
   }
 }

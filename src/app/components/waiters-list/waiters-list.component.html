@@ -1,0 +1,44 @@
+<ion-row class="bottom-row" *ngIf="viewState$ | async as vs">
+  <ion-toolbar *ngIf="vs.waiters[0].length > 0">
+    <ion-card-header>
+      <ion-card-subtitle>{{ "Waiter's list..."}}</ion-card-subtitle>
+    </ion-card-header>
+  </ion-toolbar>
+  <ion-col lines="none" *ngFor="let waiter of vs.waiters[0]">
+    <ion-card>
+      <ion-card-content>
+        <ion-list>
+          <ion-item lines="none">
+            <ion-label slot="start" class="ion-text-wrap name-label">
+              {{ waiter.name }}
+            </ion-label>
+            <ion-avatar slot="end">
+              <ion-img [src]="waiter.avatar"></ion-img>
+            </ion-avatar>
+          </ion-item>
+
+          <ion-col *ngIf="waiter.pointsList">
+            <ion-item lines="none" class="result-tips" *ngFor="let p of waiter.pointsList">
+              <ion-text slot="start"> {{ p.label }} </ion-text>
+              <ion-note slot="end"> {{ p.value }} </ion-note>
+            </ion-item>
+            <ion-item lines="none" class="result-tips" *ngIf="waiter.totalPoints">
+              <ion-note color='warning' slot="end"> {{ waiter.totalPoints }} </ion-note>
+            </ion-item>
+          </ion-col>
+
+          <ion-item *ngIf="waiter.hours && waiter.totalPoints">
+            <ion-note slot="start">
+              {{ waiter.hours }}h
+            </ion-note>
+            <ion-note slot="end">
+              {{ waiter.totalPoints }}
+              {{'POINTS' | translate}}
+            </ion-note>
+          </ion-item>
+
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </ion-col>
+</ion-row>

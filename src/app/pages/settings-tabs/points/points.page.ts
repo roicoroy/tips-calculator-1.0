@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Point } from 'src/app/models';
-// import { PointActions } from 'src/app/states/points/point.action';
-// import { PointsState } from 'src/app/states/points/point.state';
+import { NavigationService } from 'src/app/services/navigation.service';
+import { PointActions } from 'src/app/store/points/point.action';
 import { PointsModalComponent } from './points-modal/points-modal.component';
+import { PointsFacade } from './points.facade';
 
 @Component({
   selector: 'app-points',
@@ -14,16 +15,22 @@ import { PointsModalComponent } from './points-modal/points-modal.component';
 })
 export class PointsPage implements OnInit {
 
-  // @Select(PointsState.getPointsList) pointsList: Observable<Point[]>;
+  viewState$: Observable<any>;
 
   constructor(
     public modalController: ModalController,
     private store: Store,
-    private navCtrl: NavController
-  ) { }
+    private facade: PointsFacade,
+    private navigation: NavigationService,
+  ) {
+    this.viewState$ = this.facade.viewState$;
+    // this.viewState$.subscribe((vs: any) => {
+    //   console.log(vs.pointsList);
+    // });
+  }
 
   ngOnInit() {
-    // this.store.dispatch(new PointActions.Get());
+    // this.store.dispatch(new PointActions.GetPoints());
 
   }
   ionViewWillEnter() {
@@ -35,7 +42,7 @@ export class PointsPage implements OnInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if (data) {
-      // this.store.dispatch(new PointActions.Add(data));
+      this.store.dispatch(new PointActions.AddPoint(data));
     }
   }
   async editPoint(point: any) {
@@ -51,20 +58,20 @@ export class PointsPage implements OnInit {
       data
     } = await modal.onWillDismiss();
     if (data) {
-      console.log(data);
+      // console.log(data);
       const editedPoint: Point = {
         id: data.id,
         label: data.label,
         type: data.type,
         value: data.value,
       };
-      // this.store.dispatch(new PointActions.Update(editedPoint, editedPoint.id));
+      this.store.dispatch(new PointActions.UpdatePoint(editedPoint, editedPoint.id));
     }
   }
-  delete(id: number) {
-    // this.store.dispatch(new Poin: anytActions.Delete(id));
+  delete(point:Point) {
+    this.store.dispatch(new PointActions.DeletePoint(point));
   }
   homePage() {
-    this.navCtrl.navigateForward('home');
+    this.navigation.navigateForward('home');
   }
 }

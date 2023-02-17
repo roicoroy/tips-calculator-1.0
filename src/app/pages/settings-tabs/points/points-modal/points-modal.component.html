@@ -12,8 +12,9 @@
   <form [formGroup]="createPointsForm" #createPointFormRef="ngForm">
     <ion-card>
       <ion-card-header>
-        <ion-card-title>{{ isEdit ? ('SAVE_EDITED_POINT' | translate| uppercase) : ('ADD_NEW_POINT' | translate |
-          uppercase) }}</ion-card-title>
+        <ion-card-title>
+          {{ isEdit ? ('SAVE_EDITED_POINT' | translate| uppercase) : ('ADD_NEW_POINT' | translate | uppercase) }}
+        </ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-col size="12" class="label">
@@ -39,7 +40,7 @@
     </ion-card>
   </form>
 </ion-content>
-<ion-footer>
+<ion-footer eqmHideWhenKeypadVisible @scaleHeight>
   <ion-toolbar>
     <ion-button [disabled]="!createPointsForm.valid" (click)="isEdit ? saveEditedPoint() : addNewPoint()" expand="block"
       fill="solid" shape="round">

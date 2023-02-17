@@ -3,26 +3,26 @@ import { Point } from 'src/app/models';
 
 export namespace PointActions {
 
-    export class Add {
-        static readonly type = '[Point] Add';
+    export class AddPoint {
+        static readonly type = '[Point] Add Point';
         constructor(public payload: Point) {
         }
     }
-    export class Get {
-        static readonly type = '[Point] Get';
+    export class GetPoints {
+        static readonly type = '[Point] Get Point';
     }
-    export class Update {
-        static readonly type = '[Point] Update';
-        constructor(public payload: Point, public id: number) {
+    export class UpdatePoint {
+        static readonly type = '[Point] Update Point';
+        constructor(public payload: Point, public id: string | any) {
         }
     }
-    export class Delete {
-        static readonly type = '[Point] Delete';
-        constructor(public id: number) {
+    export class DeletePoint {
+        static readonly type = '[Point] Delete Point';
+        constructor(public point: Point) {
         }
     }
-    export class SetSelected {
-        static readonly type = '[Point] Set';
+    export class SetSelectedPoint {
+        static readonly type = '[Point] Set Point';
         constructor(public payload: Point[]) {
         }
     }

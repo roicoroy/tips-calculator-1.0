@@ -2,31 +2,28 @@
 import { Waiter } from 'src/app/models';
 
 export namespace WaiterActions {
-
-    export class Add {
-        static readonly type = '[Waiter] Add';
-        constructor(public payload: Waiter) {
-        }
+    export class SetWaitersList {
+        static readonly type = '[Waiter] Set Waiters List';
     }
     export class GetWaitersList {
-        static readonly type = '[Waiter] GetWaitersList';
+        static readonly type = '[Waiter] Get Waiters List';
     }
     export class Get {
         static readonly type = '[Waiter] Get';
+    }
+    export class AddWaiter {
+        static readonly type = '[Waiter] Add Waiter to waitersList';
+        constructor(public payload: Waiter) {
+        }
     }
     export class Update {
         static readonly type = '[Waiter] Update';
         constructor(public payload: Waiter, public id?: number) {
         }
     }
-    export class UpdateWaiterState {
-        static readonly type = '[Waiter] Update Waiter State';
-        constructor(public payload: Waiter) {
-        }
-    }
     export class Delete {
-        static readonly type = '[Waiter] Delete';
-        constructor(public id: number) {
+        static readonly type = '[Waiter] Delete waiter from waitesList';
+        constructor(public waiter: Waiter, public index: any) {
         }
     }
     export class SetSelected {

@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="home()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{ 'TIPS_SHARE_CALCULATOR' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-row class="ion-margin">
+    <ion-col>
+      <form [formGroup]="entryForm" #entryFormRef="ngForm">
+        <ion-item>
+          <ion-label position="floating">
+            {{ 'Tips Amount' | translate }}
+          </ion-label>
+          <ion-input type="number" inputmode="number" enterkeyhint="Tips" placeholder="Tips Amount"
+            formControlName="tipsAmount"></ion-input>
+          <div style="width: 100%" *ngFor="let validation of validationMessages?.tipsAmount">
+            <ion-note color="danger"
+              *ngIf="entryForm?.get('tipsAmount')?.hasError(validation.type) && (entryForm?.get('tipsAmount')?.dirty || entryForm?.get('tipsAmount')?.touched)">
+              {{validation.message}}
+            </ion-note>
+          </div>
+        </ion-item>
+        <br>
+        <ion-list>
+          <ion-accordion-group #accordionGroup>
+            <ion-accordion value="start">
+              <ion-item slot="header">
+                <ion-label>
+                  {{ "Today's date" | translate }}
+                </ion-label>
+                <ion-note slot="end">{{ entryForm.get('date')?.value | date }}</ion-note>
+              </ion-item>
+              <ion-datetime (ionChange)="toggleAccordion()" #dateTimeRef slot="content" displayFormat="MMMM YY"
+                size="cover" presentation="date" formControlName="date">
+              </ion-datetime>
+            </ion-accordion>
+          </ion-accordion-group>
+        </ion-list>
+      </form>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="viewState$ | async as vs">
+
+    <ion-col size="12" *ngFor="let w of vs.waitersList; let i = index">
+      <ion-card>
+        <ion-card-header>
+          <ion-item lines="none">
+            <ion-avatar slot="start">
+              <ion-img [src]="w?.avatar"></ion-img>
+            </ion-avatar>
+            <ion-label>{{ w.name }}</ion-label>
+            <ion-buttons slot="end">
+
+              <ion-button (click)="showPicker(w, i)"  shape="round">
+
+                <ion-icon color="tertiary" *ngIf="!w.hours" name="timer-sharp"></ion-icon>
+                <ion-badge color="tertiary" *ngIf="w.hours">
+                  {{ w.hours }}
+                </ion-badge>
+              </ion-button>
+            </ion-buttons>
+          </ion-item>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-row class='ion-text-center'>
+            <ion-col class="background" size="12" *ngIf='w?.pointsList'>
+              <ion-list *ngFor='let point of w?.pointsList'>
+                <ion-item>
+                  <ion-label>{{ point.label }}</ion-label>
+                  <ion-text>{{ point.value }}</ion-text>
+                </ion-item>
+              </ion-list>
+              <ion-list>
+                <ion-item>
+                  <ion-label>{{ 'Total waiters points' | translate }}</ion-label>
+                  <ion-badge slot="end" color='warning'>
+                    {{ w?.pointsList | sumPointsArray }}
+                  </ion-badge>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+
+    </ion-col>
+  </ion-row>
+
+</ion-content>
+
+<ion-footer *ngIf="viewState$ | async as vs" eqmHideWhenKeypadVisible @scaleHeight>
+  <ion-toolbar>
+    <ion-button (click)="calculate(vs.waitersList)" expand="block" fill="solid" shape="round">
+      Submit
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

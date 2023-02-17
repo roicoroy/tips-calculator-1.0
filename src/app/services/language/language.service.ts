@@ -3,8 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Device } from '@capacitor/device';
 import { LanguageModel } from './language.model';
 import { IonStorageService } from '../ionstorage.service';
-import { from, Observable } from 'rxjs';
 export const SAVED_LANGUAGE = 'saved_language';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,17 +28,18 @@ export class LanguageService {
   async initTranslate() {
     const language = await Device.getLanguageCode();
     const deviceLanguage = this.shortLanguage(language);
-    const useLang = deviceLanguage.match(/en|pt/) ? deviceLanguage : 'en';
-    if (useLang) {
-      this.storageService.getKeyAsObservable(SAVED_LANGUAGE).subscribe((lang) => {
-        if (lang && lang !== undefined) {
-          this.translate.use(lang);
-        } else {
-          this.translate.use(useLang);
-          this.storageService.storageSet(SAVED_LANGUAGE, useLang);
-        }
-      });
-    }
+    // const useLang = deviceLanguage.match(/en|pt/) ? deviceLanguage : 'en';
+    this.translate.use('en');
+    // if (useLang) {
+    //   this.storageService.getKeyAsObservable(SAVED_LANGUAGE).subscribe((lang) => {
+    //     if (lang && lang !== undefined) {
+    //       this.translate.use(lang);
+    //     } else {
+    //       this.translate.use(useLang);
+    //       this.storageService.storageSet(SAVED_LANGUAGE, useLang);
+    //     }
+    //   });
+    // }
   }
   shortLanguage(language: any) {
     if (language) {

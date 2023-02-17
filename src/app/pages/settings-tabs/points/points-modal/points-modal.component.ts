@@ -1,19 +1,23 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { IonSelect, ModalController } from '@ionic/angular';
 import { Point } from 'src/app/models/point.type';
+import { scaleHeight } from 'src/app/services/animations/animations';
+import { generateId, titleCaseWord, numberize } from 'src/app/services/utils';
 
 @Component({
   selector: 'app-points-modal',
   templateUrl: './points-modal.component.html',
   styleUrls: ['./points-modal.component.scss'],
+  animations: [
+    scaleHeight()
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PointsModalComponent implements OnInit {
-  @ViewChild('createPointFormRef', { static: false })
-  createPointFormRef!: NgForm;
-  @ViewChild('selectRef', { static: false })
-  selectRef!: IonSelect;
-  @Input() point: any;
+  @ViewChild('createPointFormRef', { static: false }) createPointFormRef!: NgForm;
+  @ViewChild('selectRef', { static: false }) selectRef!: IonSelect;
+  @Input() point: Point;
   values = [
     {
       value: 0.5,
@@ -28,12 +32,19 @@ export class PointsModalComponent implements OnInit {
       value: 2.0,
     },
   ];
+
   createPointsForm: FormGroup | any;
+
   labelField: FormControl | any;
+
   valueField: FormControl | any;
+
   pointData: Point | any;
+
   pointId: number | any;
+
   isEdit: any = null;
+
   constructor(
     public modalController: ModalController,
   ) {
@@ -70,8 +81,9 @@ export class PointsModalComponent implements OnInit {
   }
   addNewPoint() {
     const newPoint = {
-      label: this.titleCaseWord(this.createPointsForm.value.label),
-      value: this.numberize(this.valueField.value),
+      id: generateId(),
+      label: titleCaseWord(this.createPointsForm.value.label),
+      value: numberize(this.valueField.value),
       type: 'checkbox'
     };
     if (this.createPointsForm.valid) {
@@ -81,21 +93,13 @@ export class PointsModalComponent implements OnInit {
   saveEditedPoint() {
     const editPoint = {
       id: this.pointId,
-      label: this.titleCaseWord(this.createPointsForm.value.label),
-      value: this.numberize(this.valueField.value),
+      label: titleCaseWord(this.createPointsForm.value.label),
+      value: numberize(this.valueField.value),
       type: 'checkbox'
     };
     if (this.createPointsForm.valid) {
       this.modalController.dismiss(editPoint);
     }
   }
-  numberize(x: any) {
-    return Number(x);
-  }
-  titleCaseWord(word: string) {
-    if (!word) {
-      return word;
-    };
-    return word[0].toUpperCase() + word.substr(1).toLowerCase();
-  }
+
 }

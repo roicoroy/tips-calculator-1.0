@@ -1,87 +1,89 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { Waiter } from 'src/app/models';
 import { TitleCasePipe } from '@angular/common';
+import { generateId } from 'src/app/services/utils';
+import { slideUp, scaleHeight } from 'src/app/services/animations/animations';
+
 @Component({
   selector: 'app-waiter-modal',
   templateUrl: './waiter-modal.component.html',
   styleUrls: ['./waiter-modal.component.scss'],
-  providers: [TitleCasePipe]
+  providers: [TitleCasePipe],
+  animations: [
+    slideUp(),
+    scaleHeight()
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WaiterModalComponent implements OnInit {
-  @ViewChild('createPointFormRef', { static: false })
-  createWaiterFormRef!: NgForm;
 
-  @Input()
-  waiter!: Waiter;
-  createWaiterForm!: FormGroup | any;
-  nameField!: FormControl | any;
-  avatarField!: FormControl | any;
-  waiterData!: Waiter | any;
-  waiterId!: number | any;
+  @Input() waiter: Waiter;
+
+  createWaiterForm: FormGroup;
+
+  waiterId: number;
+
   isEdit: any = null;
-  // avatar = 'assets/shapes.svg';
-  avatar: any = null;
+
+  avatar: string = '';
+
   constructor(
     public modalController: ModalController,
     public actionSheetController: ActionSheetController,
     private titleCasePipe: TitleCasePipe
-  ) { }
+  ) {
+    this.createWaiterForm = new FormGroup({
+      name: new FormControl(null),
+      avatar: new FormControl(this.avatar),
+    });
+  }
 
   async ngOnInit() {
     this.setupForm();
     if (this.waiter === null || this.waiter === undefined) {
       this.isEdit = false;
-      this.nameField.setValue(null);
-      this.avatarField.setValue(null);
     } else {
       this.isEdit = true;
       this.waiterId = this.waiter.id;
-      this.nameField.setValue(this.waiter.name);
-      this.avatarField.setValue(this.waiter.avatar);
+      this.createWaiterForm.get('name')?.setValue(this.waiter.name);
+      this.createWaiterForm.get('avatar')?.setValue(this.waiter.avatar);
       this.avatar = this.waiter.avatar;
     }
   }
   setupForm() {
-    this.nameField = new FormControl(null, Validators.required);
-    this.avatarField = new FormControl(null);
     return this.createWaiterForm = new FormGroup({
-      name: this.nameField,
-      avatar: this.avatarField,
+      name: new FormControl(null),
+      avatar: new FormControl(this.avatar),
     });
   }
   addNewWaiter() {
-    const newWaiter = {
+    const newWaiter = new Waiter({
+      id: generateId(),
       name: this.titleCasePipe.transform(this.createWaiterForm.value.name),
-      avatar: this.createWaiterForm.value.avatar === null ? 'assets/shapes.svg' : this.createWaiterForm.value.avatar,
-    };
+      avatar: this.avatar,
+    });
     if (this.createWaiterForm.valid) {
       this.modalController.dismiss(newWaiter);
     }
   }
   saveEWaiter() {
-    const editWaiter = {
+    const editedWaiter = new Waiter({
       id: this.waiterId,
       name: this.titleCasePipe.transform(this.createWaiterForm.value.name),
-      avatar: this.createWaiterForm.value.avatar === null ? 'assets/shapes.svg' : this.createWaiterForm.value.avatar,
-    };
+      avatar: this.avatar,
+      pointsList: this.waiter.pointsList
+    });
     if (this.createWaiterForm.valid) {
-      this.modalController.dismiss(editWaiter);
+      this.modalController.dismiss(editedWaiter);
     }
   }
-  async onImagePicked(imageData: string | File) {
-    this.avatarField.patchValue({ imageData });
+  async onImagePicked(imageData: string) {
+    this.createWaiterForm.get('avatar')?.setValue(imageData);
     this.avatar = imageData;
   }
   dismiss() {
     this.modalController.dismiss();
-  }
-  numberize(x: number) {
-    return Number(x);
-  }
-  capitalize(value: string) {
-    const first = value.substr(0, 1).toUpperCase();
-    return first + value.substr(1);
   }
 }

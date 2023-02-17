@@ -24,3 +24,13 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+@import url("./assets/fonts/montserrat/Montserrat.css");
+
+.app-font {
+  font-family: Montserrat, "Open Sans", Helvetica, Arial, sans-serif !important;
+}
+
+* {
+  font-family: Montserrat, "Open Sans", Helvetica, Arial, sans-serif !important;
+}

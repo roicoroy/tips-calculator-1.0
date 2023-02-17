@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Review
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="home()">
+        <ion-icon name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="viewState$ | async as vs">
+
+  <selected-entry-card [selectedEntry]="vs.result"></selected-entry-card>
+
+</ion-content>

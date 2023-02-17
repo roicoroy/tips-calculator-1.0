@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { NavigationExtras } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { slideAnimation } from '../animations/nav-animation';
+import { flipAnimation, slideAnimation } from './animations/nav-animation';
+
 export interface IInternalNavigationOptions {
     /** The soft URL to navigate to. */
     url: string;
@@ -20,26 +21,36 @@ export interface IInternalNavigationOptions {
 })
 export class NavigationService {
     constructor(
-        private navCtrl: NavController
+        private navCtrl: NavController,
+        private router: Router
     ) { }
-    async navigateForward(url: string) {
+    async navigateForward(url: string, direction: any = 'forward') {
         await this.navCtrl.navigateForward(url, {
-            animation: slideAnimation,
+            // animation: slideAnimation,
             animated: true,
-            animationDirection: 'forward'
+            animationDirection: direction
         });
     }
-    async navigateForwardParams(url: string, params?) {
+    async navigateForwardParams(url: string, params?: any, direction: any = 'forward') {
         const navigationExtras: NavigationExtras = {
             queryParams: {
-                params,
+                params
             }
         };
         await this.navCtrl.navigateForward(url, {
             queryParams: navigationExtras,
-            animation: slideAnimation,
+            // animation: slideAnimation,
             animated: true,
-            animationDirection: 'forward'
+            animationDirection: direction
         });
+    }
+    async navigateFlip(url: string) {
+        await this.navCtrl.navigateForward(url, {
+            // animation: flipAnimation,
+            animated: true,
+        });
+    }
+    async navControllerDefault(url: string, direction: any = 'forward') {
+        await this.navCtrl.navigateForward(url, direction);
     }
 }

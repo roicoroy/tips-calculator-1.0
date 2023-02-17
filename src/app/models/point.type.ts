@@ -2,10 +2,10 @@ import { IPoint } from './point.interface';
 
 
 export class Point implements IPoint {
-    id: number;
-    label: string;
-    type: string;
-    value: number;
+    id?: string;
+    label?: string;
+    type?: string;
+    value?: number;
 
     constructor(point: IPoint) {
         this.id = point.id;

@@ -1,12 +1,13 @@
 import { IPoint } from './point.interface';
 
-
 export interface IWaiter {
-    id?: number;
-    name?: string;
-    totalPoints?: number;
-    pointsList?: IPoint[];
-    tipsShare?: number;
-    hours?: number;
-    avatar?: string;
+    id?: any;
+    name?: any;
+    totalPoints?: any;
+    pointsList?: any;
+    tipsShare?: any;
+    hours?: any;
+    avatar?: any;
+    xValue?: any;
+    yValue?: any;
 }

@@ -7,6 +7,7 @@ import { WaiterModalComponent } from './waiters/waiter-modal/waiter-modal.compon
 import { IonicSelectableModule } from 'ionic-selectable';
 import { WaitersPageRoutingModule } from './waiters-routing.module';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { KeypadModule } from 'src/app/services/keypad/keypad.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { ComponentsModule } from 'src/app/components/components.module';
     ReactiveFormsModule,
     IonicSelectableModule,
     WaitersPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    KeypadModule
   ],
   declarations: [
     WaitersPage,

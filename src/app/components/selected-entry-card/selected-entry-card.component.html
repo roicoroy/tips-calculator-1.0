@@ -1,0 +1,47 @@
+<ion-grid *ngIf="selectedEntry">
+  <ion-row>
+    <ion-col size="12">
+      <ion-card-header *ngIf="selectedEntry.date && selectedEntry.tipsMade">
+        <ion-card-subtitle>{{ selectedEntry.date | date }}</ion-card-subtitle>
+        <ion-card-title>
+          Tips made:
+          {{ selectedEntry.tipsMade | currency }}
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card *ngFor="let waiter of selectedEntry.waiters">
+        <ion-card-content>
+
+          <ion-item-group>
+
+            <ion-item>
+              <ion-label>{{ waiter.name }}</ion-label>
+              <ion-avatar slot="end">
+                <img [src]="sanitizer.bypassSecurityTrustUrl(waiter.avatar)" />
+              </ion-avatar>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Tips Share:</ion-label>
+              <ion-note slot="end">{{ waiter.tipsShare | currency }}</ion-note>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Hours Worked:</ion-label>
+              <ion-note slot="end">{{ waiter.hours }}h</ion-note>
+            </ion-item>
+
+            <ion-card-header>
+              <ion-card-subtitle>{{ 'Points List' }}</ion-card-subtitle>
+              <ion-item lines="none" *ngFor="let point of waiter.pointsList">
+                <ion-label> {{ point.label }} </ion-label>
+                <ion-note slot="end">{{ point.value }}</ion-note>
+              </ion-item>
+            </ion-card-header>
+
+          </ion-item-group>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>

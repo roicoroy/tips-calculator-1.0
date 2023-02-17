@@ -2,9 +2,9 @@ import { Waiter } from '.';
 import { IEntry } from './entry.interface';
 
 export class Entry implements IEntry {
-    id: number;
-    date: number;
-    tipsMade: number;
+    id: string | any;
+    date: number | any;
+    tipsMade: number | any;
     waiters: Waiter[];
 
     constructor(entry: IEntry) {

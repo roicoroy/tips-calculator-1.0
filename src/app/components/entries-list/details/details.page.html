@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button size="small" fill="clear" color="primary" (click)="home()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row *ngIf="viewState$ | async as vs">
+    <ion-col size="12">
+      <selected-entry-card [selectedEntry]="vs.selectedResult[0]"></selected-entry-card>
+    </ion-col>
+  </ion-row>
+</ion-content>

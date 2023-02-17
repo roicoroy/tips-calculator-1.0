@@ -1,13 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      {{ 'POINTS' | translate }}
-    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="addPoint()">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense" mode="ios">
+<ion-content>
+  <ion-header>
     <ion-toolbar>
       <ion-card-header>
         <ion-card-subtitle> {{ 'ADD_EDIT_MERIT' | translate }} </ion-card-subtitle>
@@ -15,33 +17,21 @@
           {{ 'POINTS' | translate }}
         </ion-card-title>
       </ion-card-header>
-      <ion-buttons class="add-button" slot="end">
-        <ion-button color='primary' (click)="addPoint()" expand="block" fill="outline" shape="round">
-          <ion-icon name="add"></ion-icon>
-        </ion-button>
-      </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <ion-card class='points-card'>
-    <!-- <ion-row>
-      <ion-col class="add-button">
-        <ion-button color='primary' (click)="addPoint()" expand="block" fill="outline" shape="round">
-          <ion-icon name="add"></ion-icon>
-        </ion-button>
-      </ion-col>
-    </ion-row> -->
-  </ion-card>
-
   <ion-grid>
-
-    <ion-row *ngFor="let p of pointsList | async">
-      <ion-col size="12">
-        <ion-item>
-          <ion-label (click)="editPoint(p)">{{ p.label }}</ion-label>
-          <ion-badge (click)="editPoint(p)" slot="end">{{ p.value }}</ion-badge>
+    <ion-row *ngIf="viewState$ | async as vs">
+      <ion-col size="12" *ngIf="viewState$ | async as vs">
+        <ion-item *ngFor="let p of vs.pointsList">
+          <ion-label (click)="editPoint(p)">
+            {{ p.label }}
+          </ion-label>
+          <ion-badge (click)="editPoint(p)" slot="end">
+            {{ p.value }}
+          </ion-badge>
           <ion-buttons slot="end">
-            <ion-button (click)="delete(p.id)" expand="block" fill="clear" shape="round">
-              <ion-icon name="close" color='danger' (click)="delete(p.id)"></ion-icon>
+            <ion-button (click)="delete(p)" expand="block" fill="clear" shape="round">
+              <ion-icon name="close" color='danger'></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-item>

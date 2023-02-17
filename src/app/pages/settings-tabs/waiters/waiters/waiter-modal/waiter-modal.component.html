@@ -1,4 +1,3 @@
-<script src="waiter-modal.component.ts"></script>
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="end">
@@ -10,7 +9,7 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="createWaiterForm" #createWaiterFormRef="ngForm">
+  <form [formGroup]="createWaiterForm">
     <ion-card>
       <ion-card-header>
         <ion-card-title> {{ isEdit ? ('SAVE_EDITED_WAITER' | translate) : ('ADD_NEW_WAITER' | translate) }} </ion-card-title>
@@ -37,7 +36,7 @@
     </ion-card>
   </form>
 </ion-content>
-<ion-footer>
+<ion-footer eqmHideWhenKeypadVisible @scaleHeight>
   <ion-toolbar>
     <ion-button [disabled]="!createWaiterForm.valid" (click)="isEdit ? saveEWaiter() : addNewWaiter()" expand="block"
       fill="solid" shape="round">
@@ -45,5 +44,3 @@
     </ion-button>
   </ion-toolbar>
 </ion-footer>
-
-
