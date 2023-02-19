@@ -22,6 +22,7 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { LanguageState } from './store/language/language.state';
 import { ResultState } from './store/result/result.state';
 import { KeyboardState } from './store/keyboard/keyboard.state';
+import { TutorialState } from './store/tutorial/point.state';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -59,7 +60,8 @@ export function createTranslateLoader(http: HttpClient) {
       WaitersState,
       LanguageState,
       ResultState,
-      KeyboardState
+      KeyboardState,
+      TutorialState
     ]),
     NgxsStoragePluginModule.forRoot({
       key: [
@@ -67,7 +69,8 @@ export function createTranslateLoader(http: HttpClient) {
         'point',
         'waiter',
         'resultList',
-        'keyboard'
+        'keyboard',
+        'tutorial'
       ]
     }),
   ],

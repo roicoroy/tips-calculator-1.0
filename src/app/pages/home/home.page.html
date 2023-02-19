@@ -5,25 +5,28 @@
         <ion-icon color="light" name="settings"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <!-- <ion-buttons slot="end">
-      <app-translate></app-translate>
-    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-header>
+    <ion-toolbar>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>
+            {{ 'WELCOME' | translate }}
+          </ion-card-subtitle>
+          <ion-card-title>
+            {{ 'TIPS_SHARE_CALCULATOR' | translate }}
+          </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </ion-toolbar>
+  </ion-header>
 
   <ion-grid fixed>
 
-    <ion-header>
-      <ion-toolbar>
-        <ion-card-header>
-          <ion-card-subtitle> {{ 'WELCOME' | translate }} </ion-card-subtitle>
-          <ion-card-title> {{ 'TIPS_SHARE_CALCULATOR' | translate }} </ion-card-title>
-        </ion-card-header>
-      </ion-toolbar>
-    </ion-header>
+
 
     <ion-row class="top-row">
       <ion-col>

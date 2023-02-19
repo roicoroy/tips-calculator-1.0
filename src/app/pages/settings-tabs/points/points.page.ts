@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Point } from 'src/app/models';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PointActions } from 'src/app/store/points/point.action';
+import { TutorialActions } from 'src/app/store/tutorial/tutorial.action';
 import { PointsModalComponent } from './points-modal/points-modal.component';
 import { PointsFacade } from './points.facade';
 
@@ -68,10 +69,14 @@ export class PointsPage implements OnInit {
       this.store.dispatch(new PointActions.UpdatePoint(editedPoint, editedPoint.id));
     }
   }
-  delete(point:Point) {
+  delete(point: Point) {
     this.store.dispatch(new PointActions.DeletePoint(point));
   }
   homePage() {
-    this.navigation.navigateForward('home');
+    this.navigation.navigateForward('/home');
+  }
+  openTutorial() {
+    this.store.dispatch(new TutorialActions.SetTutorialComplete(false));
+    this.navigation.navigateForward('/home');
   }
 }

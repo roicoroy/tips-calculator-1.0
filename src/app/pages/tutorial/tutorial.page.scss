@@ -1,0 +1,18 @@
+ion-slides {
+  --bullet-background-active: var(--ion-color-dark);
+}
+
+:host(.first-slide-active) {
+  .skip-walkthrough-button {
+    visibility: hidden;
+  }
+}
+
+ion-card {
+  background-color: var(--ion-color-light);
+}
+
+ion-slides {
+  --bullet-background: var(--ion-color-light);
+  --bullet-background-active: var(--ion-color-primary);
+}

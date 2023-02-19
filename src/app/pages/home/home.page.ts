@@ -16,10 +16,10 @@ export class HomePage implements OnInit, AfterViewInit {
   ngAfterViewInit() {
   }
   async settings() {
-    await this.navigation.navigateForward('settings/tabs/waiters');
+    await this.navigation.navigateFadeOut('settings/tabs/waiters');
   }
   async calculator() {
-    await this.navigation.navigateForward('calculator');
+    await this.navigation.navigateFlip('calculator');
   }
   async details($event: Event) {
     await this.navigation.navigateFadeOut('home/details');

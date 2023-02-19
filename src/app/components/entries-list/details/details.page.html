@@ -14,4 +14,12 @@
       <selected-entry-card [selectedEntry]="vs.selectedResult[0]"></selected-entry-card>
     </ion-col>
   </ion-row>
+
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" (click)="shareContent()">
+      <ion-icon color='light' name="share"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>

@@ -1,4 +1,4 @@
-<ion-list>
+<ion-list *ngIf="viewState$ | async as vs">
   <ion-item-group *ngIf="viewState$ | async as vs">
     <ion-card-header *ngIf="vs.results[0].label > 0">
       <ion-card-subtitle>{{ 'WHAT_IS_HAPPENING' | translate }}</ion-card-subtitle>
@@ -10,7 +10,7 @@
           <ion-note slot="end">{{ result.tipsMade | currency:'GPB' }}</ion-note>
         </ion-item>
         <ion-item-options side="end">
-          <ion-item-option (click)="remove(result)">
+          <ion-item-option color="warning" (click)="remove(result)">
             <ion-icon color="danger" name="close"></ion-icon>
           </ion-item-option>
         </ion-item-options>

@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar color="secondary">
     <ion-buttons slot="end">
+      <ion-button (click)="openTutorial()">
+        {{ 'see tutorial' | translate | uppercase}}
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
       <ion-button fill="clear" (click)="addPoint()">
         <ion-icon name="add"></ion-icon>
       </ion-button>
@@ -26,8 +31,10 @@
           <ion-label (click)="editPoint(p)">
             {{ p.label }}
           </ion-label>
-          <ion-badge (click)="editPoint(p)" slot="end">
-            {{ p.value }}
+          <ion-badge color="warning" (click)="editPoint(p)" slot="end">
+            <ion-text color="light">
+              {{ p.value }}
+            </ion-text>
           </ion-badge>
           <ion-buttons slot="end">
             <ion-button (click)="delete(p)" expand="block" fill="clear" shape="round">

@@ -24,7 +24,7 @@ import { SumPointsArrayPipe } from './sum-array.pipe';
     slideUp(),
     scaleHeight()
   ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CalculatorPage implements OnInit {
 
@@ -58,6 +58,9 @@ export class CalculatorPage implements OnInit {
     private calculatorService: CalculatorService
   ) {
     this.viewState$ = this.facade.viewState$;
+    this.viewState$.subscribe((vs) => {
+      console.log(vs);
+    });
     this.entryForm = this.formBuilder.group({
       date: new FormControl(this.dateToday),
       tipsAmount: new FormControl(100),
@@ -216,6 +219,6 @@ export class CalculatorPage implements OnInit {
     await this.navigation.navigateForward('result');
   }
   async home() {
-    await this.navigation.navigateFlip('home');
+    await this.navigation.navigateFadeOut('home');
   }
 }

@@ -7,4 +7,7 @@ export interface IStates {
     point: Point,
     resultList: WaiterResultStateModel,
     waiter: WaiterStateModel,
+    tutorial: {
+        isTutorialComplete: boolean
+    }
 }

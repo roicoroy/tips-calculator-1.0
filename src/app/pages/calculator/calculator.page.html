@@ -17,10 +17,10 @@
           <ion-label position="floating">
             {{ 'Tips Amount' | translate }}
           </ion-label>
-          <ion-input clearInput='true' clearOnEdit='true' type="number" inputmode="number" enterkeyhint="Tips"
+          <ion-input clearInput='true' clearOnEdit='true' type="number" inputmode="decimal" enterkeyhint="Tips"
             placeholder="Tips Amount" formControlName="tipsAmount">
           </ion-input>
-          <div style="width: 100%" *ngFor="let validation of validationMessages?.tipsAmount">
+          <div *ngFor="let validation of validationMessages?.tipsAmount">
             <ion-note color="danger"
               *ngIf="entryForm?.get('tipsAmount')?.hasError(validation.type) && (entryForm?.get('tipsAmount')?.dirty || entryForm?.get('tipsAmount')?.touched)">
               {{validation.message}}
@@ -56,11 +56,11 @@
             <ion-avatar slot="start">
               <ion-img [src]="w?.avatar"></ion-img>
             </ion-avatar>
-            <ion-label>{{ w.name }}</ion-label>
+            <ion-label position="floating">
+              {{ w.name }}
+            </ion-label>
             <ion-buttons slot="end">
-
               <ion-button (click)="showPicker(w, i)" shape="round">
-
                 <ion-icon color="tertiary" *ngIf="!w.hours" name="timer-sharp"></ion-icon>
                 <ion-badge color="tertiary" *ngIf="w.hours">
                   {{ w.hours }}
@@ -75,7 +75,9 @@
             <ion-col class="background" size="12" *ngIf='w?.pointsList'>
               <ion-list *ngFor='let point of w?.pointsList'>
                 <ion-item>
-                  <ion-label>{{ point.label }}</ion-label>
+                  <ion-label position="floating">
+                    {{ point.label }}
+                  </ion-label>
                   <ion-text>{{ point.value }}</ion-text>
                 </ion-item>
               </ion-list>
@@ -99,11 +101,14 @@
 
 <ion-footer *ngIf="viewState$ | async as vs" eqmHideWhenKeypadVisible @scaleHeight>
   <ion-toolbar>
+
     <ion-button [disabled]="!entryForm?.get('tipsAmount')?.value" color="tertiary" (click)="calculate(vs.waitersList)"
       expand="block" fill="solid" shape="round">
       <ion-text color="light">
         {{ 'Submit' | translate }}
       </ion-text>
     </ion-button>
+
+
   </ion-toolbar>
 </ion-footer>

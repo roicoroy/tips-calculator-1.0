@@ -27,7 +27,7 @@ export class ResultPage implements OnInit {
   ngOnInit() {
   }
   async home() {
-    await this.navigation.navigateFlip('/home');
+    await this.navigation.navigateFadeOut('/home');
   }
   ionViewDidLeave() {
     this.sub?.unsubscribe();

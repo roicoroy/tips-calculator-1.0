@@ -66,6 +66,6 @@ export class WaitersPage {
     this.store.dispatch(new WaiterActions.Delete(waiter, i));
   }
   async homePage() {
-    await this.navigation.navigateFlip('home');
+    await this.navigation.navigateFadeOut('home');
   }
 }

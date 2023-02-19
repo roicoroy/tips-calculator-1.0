@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EntriesListComponent } from './entries-list/entries-list.component';
 import { ThemeComponent } from './theme/theme.component';
 import { SelectedEntryCardComponent } from './selected-entry-card/selected-entry-card.component';
+import { ShellModule } from './shell/shell.module';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { SelectedEntryCardComponent } from './selected-entry-card/selected-entry
     FormsModule,
     IonicModule,
     TranslateModule,
+    ShellModule
   ],
   declarations: [
     TranslateComponent,
