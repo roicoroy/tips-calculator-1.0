@@ -66,7 +66,8 @@ export class WaitersState {
     @Action(WaiterActions.AddWaiter)
     addWaiter(ctx: StateContext<WaiterStateModel>, { payload }: WaiterActions.AddWaiter) {
         const state = ctx.getState();
-        return ctx.patchState({
+        // console.log(state);
+        ctx.patchState({
             waiters: [
                 ...state.waiters,
                 payload

@@ -1,10 +1,10 @@
 <ion-row class="bottom-row" *ngIf="viewState$ | async as vs">
-  <ion-toolbar *ngIf="vs.waiters[0].length > 0">
+  <ion-toolbar *ngIf="vs?.waiters[0]?.length > 0">
     <ion-card-header>
       <ion-card-subtitle>{{ "Waiter's list..."}}</ion-card-subtitle>
     </ion-card-header>
   </ion-toolbar>
-  <ion-col lines="none" *ngFor="let waiter of vs.waiters[0]">
+  <ion-col lines="none" *ngFor="let waiter of vs?.waiters[0]">
     <ion-card>
       <ion-card-content>
         <ion-list>

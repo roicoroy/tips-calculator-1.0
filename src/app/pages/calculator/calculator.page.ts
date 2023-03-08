@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { IonAccordionGroup, IonDatetime, PickerController, PickerOptions } from '@ionic/angular';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { AlertController, IonAccordionGroup, IonDatetime, PickerController, PickerOptions } from '@ionic/angular';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Entry, Waiter } from 'src/app/models';
@@ -26,7 +26,7 @@ import { SumPointsArrayPipe } from './sum-array.pipe';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CalculatorPage implements OnInit {
+export class CalculatorPage {
 
   @ViewChild('accordionGroup', { static: true }) accordionGroup: IonAccordionGroup;
 
@@ -55,19 +55,14 @@ export class CalculatorPage implements OnInit {
     private formBuilder: FormBuilder,
     private store: Store,
     private pickerController: PickerController,
+    private alertController: AlertController,
     private calculatorService: CalculatorService
   ) {
     this.viewState$ = this.facade.viewState$;
-    this.viewState$.subscribe((vs) => {
-      console.log(vs);
-    });
     this.entryForm = this.formBuilder.group({
       date: new FormControl(this.dateToday),
-      tipsAmount: new FormControl(100),
+      tipsAmount: new FormControl(null, Validators.required),
     });
-  }
-
-  ngOnInit() {
   }
   calculate(waitersList: Waiter[]) {
     if (this.entryForm.value.date && this.entryForm.value.tipsAmount) {
@@ -77,7 +72,33 @@ export class CalculatorPage implements OnInit {
         this.store.dispatch(new ResultActions.SetSelectedResult(teamEntry));
         this.navigation.navigateForward('result');
       }
+    } else {
+      this.presentAlert('Add Tips Amount');
     }
+  }
+  async presentAlert(message: any) {
+    const alert = await this.alertController.create({
+      message: message,
+      buttons: [
+        {
+          text: 'OK',
+          role: 'confirm',
+        },
+      ],
+    });
+    await alert.present();
+  }
+  submitButtonState(waitersList: Waiter[]): boolean {
+    let resultB = waitersList.every((el: Waiter, index: number, arr: Waiter[]) => {
+      let myArray: Waiter[] = [];
+      arr.forEach((waiter: any) => {
+        waiter.hours;
+        myArray.push(waiter.hours);
+      });
+      return el.hours === arr[index].hours && myArray[index] != null;
+    }
+    );
+    return resultB;
   }
   async showPicker(w: Waiter, i: number) {
     const settings: PickerOptions = {
@@ -212,7 +233,6 @@ export class CalculatorPage implements OnInit {
     }
   };
   onDateTimeChange() {
-    // console.log(this.dateTimeRef);
     this.dateTimeRef.nativeElement.confirm();
   }
   async result() {

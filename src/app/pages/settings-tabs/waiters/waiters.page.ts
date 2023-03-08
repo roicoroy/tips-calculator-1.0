@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { IonicSelectableComponent } from 'ionic-selectable';
 import { Observable } from 'rxjs';
+import { IonicSelectableComponent } from 'src/app/components/ionic-selectable/ionic-selectable.component';
 import { Waiter } from 'src/app/models';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { WaiterActions } from 'src/app/store/waiters/waiter.action';
@@ -55,11 +55,12 @@ export class WaitersPage {
 
   onSelectTableChange($event: any, i: number): void {
     const waiters = this.store.selectSnapshot<any>((state: any) => state.waiter?.waiters);
-    const waiter = new Waiter({});
-    waiter.id = waiters[i].id;
-    waiter.name = waiters[i].name;
-    waiter.pointsList = $event.value;
-    waiter.avatar = waiters[i].avatar;
+    const waiter = new Waiter({
+      id: waiters[i].id,
+      name: waiters[i].name,
+      pointsList: $event.value,
+      avatar: waiters[i].avatar,
+    });
     this.store.dispatch(new WaiterActions.Update(waiter, waiter.id));
   }
   deleteWaiter(waiter: any, i: number) {

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Point } from 'src/app/models';
+import { ModalAnimationsService } from 'src/app/services/animations/modal-animations.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PointActions } from 'src/app/store/points/point.action';
 import { TutorialActions } from 'src/app/store/tutorial/tutorial.action';
@@ -14,7 +15,7 @@ import { PointsFacade } from './points.facade';
   templateUrl: './points.page.html',
   styleUrls: ['./points.page.scss'],
 })
-export class PointsPage implements OnInit {
+export class PointsPage {
 
   viewState$: Observable<any>;
 
@@ -23,22 +24,16 @@ export class PointsPage implements OnInit {
     private store: Store,
     private facade: PointsFacade,
     private navigation: NavigationService,
+    private animations: ModalAnimationsService,
   ) {
     this.viewState$ = this.facade.viewState$;
-    // this.viewState$.subscribe((vs: any) => {
-    //   console.log(vs.pointsList);
-    // });
-  }
-
-  ngOnInit() {
-    // this.store.dispatch(new PointActions.GetPoints());
-
-  }
-  ionViewWillEnter() {
   }
   async addPoint() {
     const modal = await this.modalController.create({
       component: PointsModalComponent,
+      animated: true,
+      enterAnimation: this.animations.enterAnimation,
+      leaveAnimation: this.animations.leaveAnimation
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
@@ -52,21 +47,15 @@ export class PointsPage implements OnInit {
       cssClass: 'modal-class',
       componentProps: {
         point,
-      }
+      },
+      animated: true,
+      enterAnimation: this.animations.enterAnimation,
+      leaveAnimation: this.animations.leaveAnimation
     });
     await modal.present();
-    const {
-      data
-    } = await modal.onWillDismiss();
+    const { data } = await modal.onWillDismiss();
     if (data) {
-      // console.log(data);
-      const editedPoint: Point = {
-        id: data.id,
-        label: data.label,
-        type: data.type,
-        value: data.value,
-      };
-      this.store.dispatch(new PointActions.UpdatePoint(editedPoint, editedPoint.id));
+      this.store.dispatch(new PointActions.UpdatePoint(data, data.id));
     }
   }
   delete(point: Point) {

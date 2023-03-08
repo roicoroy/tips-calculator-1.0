@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { IonSelect, ModalController } from '@ionic/angular';
 import { Point } from 'src/app/models/point.type';
@@ -14,7 +14,7 @@ import { generateId, titleCaseWord, numberize } from 'src/app/services/utils';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PointsModalComponent implements OnInit {
+export class PointsModalComponent implements OnInit, AfterViewInit {
   @ViewChild('createPointFormRef', { static: false }) createPointFormRef!: NgForm;
   @ViewChild('selectRef', { static: false }) selectRef!: IonSelect;
   @Input() point: Point;
@@ -33,70 +33,62 @@ export class PointsModalComponent implements OnInit {
     },
   ];
 
-  createPointsForm: FormGroup | any;
+  createPointsForm: FormGroup;
+  pointData: Point;
 
-  labelField: FormControl | any;
-
-  valueField: FormControl | any;
-
-  pointData: Point | any;
-
-  pointId: number | any;
+  pointId: any;
 
   isEdit: any = null;
 
   constructor(
     public modalController: ModalController,
-  ) {
-  }
+  ) { }
+
   get labelFormControl() {
-    return this.createPointsForm.get('points').value as FormControl;
+    return this.createPointsForm?.get('label') as FormControl;
   }
   get valueFormControl() {
-    return this.createPointsForm.get('value').value as FormControl;
+    return this.createPointsForm?.get('value') as FormControl;
   }
   ngOnInit() {
-    this.setupForm();
+    this.createPointsForm = new FormGroup({
+      label: new FormControl('', Validators.required),
+      value: new FormControl('', Validators.required),
+    });
+  }
+  ngAfterViewInit(): void {
     if (this.point === null || this.point === undefined) {
       this.isEdit = false;
-      this.labelField.setValue('');
-      this.valueField.setValue('');
+      this.labelFormControl.setValue('');
+      this.valueFormControl.setValue('');
     } else {
       this.isEdit = true;
       this.pointId = this.point.id;
-      this.labelField.setValue(this.point.label);
-      this.valueField.setValue(this.point.value);
+      this.labelFormControl.setValue(this.point.label);
+      this.valueFormControl.setValue(this.point.value);
     }
-  }
-  setupForm() {
-    this.labelField = new FormControl('', Validators.required);
-    this.valueField = new FormControl('', Validators.required);
-    return this.createPointsForm = new FormGroup({
-      label: this.labelField,
-      value: this.valueField,
-    });
   }
   dismiss() {
     this.modalController.dismiss();
   }
   addNewPoint() {
-    const newPoint = {
+    const newPoint = new Point({
       id: generateId(),
       label: titleCaseWord(this.createPointsForm.value.label),
-      value: numberize(this.valueField.value),
+      value: numberize(this.valueFormControl.value),
       type: 'checkbox'
-    };
+    })
     if (this.createPointsForm.valid) {
       this.modalController.dismiss(newPoint);
     }
   }
   saveEditedPoint() {
-    const editPoint = {
+    const editPoint = new Point({
       id: this.pointId,
       label: titleCaseWord(this.createPointsForm.value.label),
-      value: numberize(this.valueField.value),
+      value: numberize(this.valueFormControl.value),
       type: 'checkbox'
-    };
+    });
     if (this.createPointsForm.valid) {
       this.modalController.dismiss(editPoint);
     }

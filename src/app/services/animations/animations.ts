@@ -1,4 +1,5 @@
 import { animation, style, animate } from '@angular/animations';
+import { AnimationController } from '@ionic/angular';
 import { AnimationSeries, NamedAnimation } from './animation-series';
 
 class SlideWithZoomAnimation extends AnimationSeries {

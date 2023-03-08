@@ -25,8 +25,10 @@ export class AppComponent {
       this.theme.themeInit();
 
       if (this.platform.is('android') || this.platform.is('ios')) {
-        this.keyboardService.setAccessoryBarVisible(true).catch(() => { });
-        this.keyboardService.initKeyboardListeners();
+        // this.keyboardService.setAccessoryBarVisible(true).catch(() => { });
+        // this.keyboardService.initKeyboardListeners();
+        // await SplashScreen.hide()
+        // await StatusBar.setStyle({ style: StatusBarStyle.Light })
       }
     } catch (err) {
       console.log('This is normal in a browser', err);

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Waiter, Entry } from 'src/app/models';
 import { generateId, sumPointsArray } from 'src/app/services/utils';
 import { SumPointsArrayPipe } from './sum-array.pipe';
-const nanoid = require('nanoid');
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +40,6 @@ export class CalculatorService {
       tipsMade: tips,
       date,
       waiters: lWaiter,
-    });;
+    });
   }
 }

@@ -9,7 +9,6 @@
 </ion-header>
 
 <ion-content>
-
   <ion-row class="ion-margin">
     <ion-col>
       <form [formGroup]="entryForm" #entryFormRef="ngForm">
@@ -48,7 +47,6 @@
   </ion-row>
 
   <ion-row *ngIf="viewState$ | async as vs">
-
     <ion-col size="12" *ngFor="let w of vs.waitersList; let i = index">
       <ion-card>
         <ion-card-header>
@@ -75,10 +73,10 @@
             <ion-col class="background" size="12" *ngIf='w?.pointsList'>
               <ion-list *ngFor='let point of w?.pointsList'>
                 <ion-item>
-                  <ion-label position="floating">
+                  <ion-label>
                     {{ point.label }}
                   </ion-label>
-                  <ion-text>{{ point.value }}</ion-text>
+                  <ion-label color="primary" slot="end">{{ point.value }}</ion-label>
                 </ion-item>
               </ion-list>
               <ion-list>
@@ -101,14 +99,11 @@
 
 <ion-footer *ngIf="viewState$ | async as vs" eqmHideWhenKeypadVisible @scaleHeight>
   <ion-toolbar>
-
-    <ion-button [disabled]="!entryForm?.get('tipsAmount')?.value" color="tertiary" (click)="calculate(vs.waitersList)"
+    <ion-button [disabled]="!entryForm.valid && !submitButtonState(vs.waitersList)" color="tertiary" (click)="calculate(vs.waitersList)"
       expand="block" fill="solid" shape="round">
       <ion-text color="light">
         {{ 'Submit' | translate }}
       </ion-text>
     </ion-button>
-
-
   </ion-toolbar>
 </ion-footer>

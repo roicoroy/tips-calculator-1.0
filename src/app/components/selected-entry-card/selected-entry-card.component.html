@@ -32,7 +32,7 @@
             </ion-item>
 
             <ion-card-header>
-              <ion-card-subtitle>{{ 'Points List' }}</ion-card-subtitle>
+              <ion-card-subtitle>{{ 'Points List' | translate }}</ion-card-subtitle>
               <ion-item lines="none" *ngFor="let point of waiter.pointsList">
                 <ion-label> {{ point.label }} </ion-label>
                 <ion-note slot="end">{{ point.value }}</ion-note>

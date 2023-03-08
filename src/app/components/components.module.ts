@@ -11,6 +11,7 @@ import { EntriesListComponent } from './entries-list/entries-list.component';
 import { ThemeComponent } from './theme/theme.component';
 import { SelectedEntryCardComponent } from './selected-entry-card/selected-entry-card.component';
 import { ShellModule } from './shell/shell.module';
+import { CardMenuComponent } from './card-menu/card-menu.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { ShellModule } from './shell/shell.module';
     WaitersListComponent,
     EntriesListComponent,
     SelectedEntryCardComponent,
-    ThemeComponent
+    ThemeComponent,
+    CardMenuComponent,
   ],
   exports: [
     TranslateComponent,
@@ -36,6 +38,7 @@ import { ShellModule } from './shell/shell.module';
     TranslateModule,
     SelectedEntryCardComponent,
     ThemeComponent,
+    CardMenuComponent,
   ]
 })
 export class ComponentsModule { }

@@ -1,7 +1,8 @@
 {
     "cSpell.words": [
         "Datetime",
-        "mobileweb"
+        "mobileweb",
+        "numberize"
     ],
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#24df1c",
